@@ -1,6 +1,7 @@
 import express from "express";
 const route = express.Router();
 import symptomController from "../controllers/symptom.js";
+import { checkToken } from "../helper/jwt.js";
 
 /**
  * @openapi
@@ -38,7 +39,7 @@ import symptomController from "../controllers/symptom.js";
  *       500:
  *         description: Internal server error
  */
-route.get("/", symptomController.getAll);
+route.get("/", checkToken, symptomController.getAll);
 
 /**
  * @openapi
@@ -78,7 +79,7 @@ route.get("/", symptomController.getAll);
  *       500:
  *         description: Internal server error
  */
-route.get("/:id", symptomController.getById);
+route.get("/:id", checkToken, symptomController.getById);
 
 /**
  * @openapi
@@ -110,7 +111,7 @@ route.get("/:id", symptomController.getById);
  *       500:
  *         description: Internal server error
  */
-route.post("/", symptomController.create);
+route.post("/", checkToken, symptomController.create);
 
 /**
  * @openapi
@@ -148,7 +149,7 @@ route.post("/", symptomController.create);
  *       500:
  *         description: Internal server error
  */
-route.put("/:id", symptomController.update);
+route.put("/:id", checkToken, symptomController.update);
 
 /**
  * @openapi
@@ -171,6 +172,6 @@ route.put("/:id", symptomController.update);
  *       500:
  *         description: Internal server error
  */
-route.delete("/:id", symptomController.remove);
+route.delete("/:id", checkToken, symptomController.remove);
 
 export default route;

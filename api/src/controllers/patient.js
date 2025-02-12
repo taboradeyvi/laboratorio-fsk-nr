@@ -1,11 +1,11 @@
-import PatientService from "../services/patient.js";
+import patientService from "../services/patient.js";
 
 class PatientController {
   constructor() {}
 
   async getById(req, res, next) {
     try {
-      const patient = await PatientService.getById(req.params.id);
+      const patient = await patientService.getById(req.params.id);
       res.status(200).json(patient);
     } catch (error) {
       next(error);
@@ -14,7 +14,7 @@ class PatientController {
 
   async getAll(req, res, next) {
     try {
-      const patient = await PatientService.getAll();
+      const patient = await patientService.getAll();
       res.status(200).json(patient);
     } catch (error) {
       next(error);
@@ -23,7 +23,7 @@ class PatientController {
 
   async create(req, res, next) {
     try {
-      const patient = await PatientService.create(req.body);
+      const patient = await patientService.create(req.body);
       res.status(201).json(patient);
     } catch (error) {
       next(error);
@@ -32,7 +32,7 @@ class PatientController {
 
   async update(req, res, next) {
     try {
-      const patient = await PatientService.update(req.params.id, req.body);
+      const patient = await patientService.update(req.params.id, req.body);
       res.status(200).json(patient);
     } catch (error) {
       next(error);
@@ -41,7 +41,7 @@ class PatientController {
 
   async remove(req, res, next) {
     try {
-      const patient = await PatientService.delete(req.params.id, req.body);
+      const patient = await patientService.delete(req.params.id, req.body);
       res.status(200).json(patient);
     } catch (error) {
       next(error);

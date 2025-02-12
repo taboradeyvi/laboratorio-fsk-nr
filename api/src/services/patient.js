@@ -1,8 +1,8 @@
-import Patient from "../schemas/patient.js";
+import patientSchema from "../schemas/patient.js";
 
 class PatientService {
   async create(patient) {
-    const exists = await Patient.exists({
+    const exists = await patientSchema.exists({
       firstName: patient.firstName,
       lastName: patient.lastName,
     });
@@ -13,11 +13,11 @@ class PatientService {
       throw error;
     }
 
-    return await Patient.create(patient);
+    return await patientSchema.create(patient);
   }
 
   async update(id, patient) {
-    const exists = await Patient.exists({
+    const exists = await patientSchema.exists({
       firstName: patient.firstName,
       lastName: patient.lastName,
       _id: { $ne: id },
@@ -34,26 +34,26 @@ class PatientService {
       throw error;
     }
 
-    return await Patient.updateOne({ _id: id }, patient, { new: true });
+    return await patientSchema.updateOne({ _id: id }, patient, { new: true });
   }
 
   async delete(id) {
-    const exists = await Patient.findById(id);
+    const exists = await patientSchema.findById(id);
     if (exists === null) {
       const error = new Error("Patient not found");
       error.status = 404;
       throw error;
     }
 
-    return await Patient.deleteOne({ _id: id });
+    return await patientSchema.deleteOne({ _id: id });
   }
 
   async getAll() {
-    return await Patient.find();
+    return await patientSchema.find();
   }
 
   async getById(id) {
-    const exists = await Patient.findById(id);
+    const exists = await patientSchema.findById(id);
     if (exists === null) {
       const error = new Error("Patient not found");
       error.status = 404;

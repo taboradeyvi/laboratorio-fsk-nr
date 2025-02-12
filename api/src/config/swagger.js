@@ -1,5 +1,6 @@
 import swaggerJsDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
+import fs from "fs";
 
 const swaggerOptions = {
   definition: {
@@ -19,8 +20,18 @@ const swaggerOptions = {
   apis: ["./src/routes/*.js"],
 };
 
-const swaggerDocs = swaggerJsDoc(swaggerOptions);
+const swaggerSpec = swaggerJsDoc(swaggerOptions);
 
-export default (app) => {
-  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+const generateSwaggerFile = () => {
+  const swaggerJSONPath = "./swagger.json";
+  fs.writeFileSync(swaggerJSONPath, JSON.stringify(swaggerSpec, null, 2));
+  console.log("✅ Archivo swagger.json generado correctamente");
 };
+
+const swaggerDocs = (app) => {
+  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+  generateSwaggerFile();
+};
+
+export default swaggerDocs;

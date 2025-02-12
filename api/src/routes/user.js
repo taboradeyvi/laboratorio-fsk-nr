@@ -1,6 +1,7 @@
 import express from "express";
 const route = express.Router();
 import userController from "../controllers/user.js";
+import { checkToken } from "../helper/jwt.js";
 
 /**
  * @openapi
@@ -51,7 +52,7 @@ import userController from "../controllers/user.js";
  *       500:
  *         description: Internal server error
  */
-route.get("/", userController.getAll);
+route.get("/", checkToken, userController.getAll);
 
 /**
  * @openapi
@@ -100,7 +101,7 @@ route.get("/", userController.getAll);
  *       500:
  *         description: Internal server error
  */
-route.get("/:id", userController.getById);
+route.get("/:id", checkToken, userController.getById);
 
 /**
  * @openapi
@@ -156,6 +157,38 @@ route.post("/", userController.create);
 
 /**
  * @openapi
+ * /users/login:
+ *   post:
+ *     summary: Authenticate a user and generate a token
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - userName
+ *               - password
+ *             properties:
+ *               userName:
+ *                 type: string
+ *                 description: Username of the user
+ *               password:
+ *                 type: string
+ *                 description: User's password
+ *     responses:
+ *       200:
+ *         description: Authentication successful, returns a JWT token
+ *       401:
+ *         description: Invalid credentials
+ *       500:
+ *         description: Internal server error
+ */
+route.post("/login", checkToken, userController.login);
+
+/**
+ * @openapi
  * /users/{id}:
  *   put:
  *     summary: Update a user by ID
@@ -203,7 +236,7 @@ route.post("/", userController.create);
  *       500:
  *         description: Internal server error
  */
-// route.post("/login", userController.login);
+route.put("/:id", checkToken, userController.update);
 
 /**
  * @openapi
@@ -226,38 +259,6 @@ route.post("/", userController.create);
  *       500:
  *         description: Internal server error
  */
-route.put("/:id", userController.update);
-
-/**
- * @openapi
- * /users/login:
- *   post:
- *     summary: Authenticate a user and generate a token
- *     tags: [Users]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - userName
- *               - password
- *             properties:
- *               userName:
- *                 type: string
- *                 description: Username of the user
- *               password:
- *                 type: string
- *                 description: User's password
- *     responses:
- *       200:
- *         description: Authentication successful, returns a JWT token
- *       401:
- *         description: Invalid credentials
- *       500:
- *         description: Internal server error
- */
-route.delete("/:id", userController.remove);
+route.delete("/:id", checkToken, userController.remove);
 
 export default route;
