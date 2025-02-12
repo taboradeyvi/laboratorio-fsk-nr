@@ -1,4 +1,5 @@
 import PatientService from "../services/patient.js";
+
 class PatientController {
   constructor() {}
 

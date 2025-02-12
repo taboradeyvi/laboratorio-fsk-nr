@@ -1,4 +1,5 @@
 import SymptomService from "../services/symptom.js";
+
 class SymptomController {
   constructor() {}
 
