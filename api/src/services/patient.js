@@ -1,5 +1,4 @@
 import Patient from "../schemas/patient.js";
-import mongoose from "mongoose";
 
 class PatientService {
   async create(patient) {
@@ -34,17 +33,18 @@ class PatientService {
       error.status = 400;
       throw error;
     }
-    return await Patient.findOneAndUpdate({ _id: id }, patient, { new: true });
+
+    return await Patient.updateOne({ _id: id }, patient, { new: true });
   }
 
   async delete(id) {
     const exists = await Patient.findById(id);
-    console.log(exists);
     if (exists === null) {
       const error = new Error("Patient not found");
       error.status = 404;
       throw error;
     }
+
     return await Patient.deleteOne({ _id: id });
   }
 
@@ -59,6 +59,7 @@ class PatientService {
       error.status = 404;
       throw error;
     }
+
     return exists;
   }
 }
