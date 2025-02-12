@@ -1,20 +1,43 @@
-import 'dotenv/config';
-import mongoose from 'mongoose';
+import "dotenv/config";
+import mongoose from "mongoose";
 
 class databaseClient {
-    constructor(){
-        this.connectDB();
-    }
+  constructor() {
+    this.connectDB();
+  }
 
-    async connectDB(){
-        const connectionString = 
-        `mongodb+srv://${process.env.USER_DB}:${process.env.PASSWORD_DB}${process.env.SERVER_DB}/${process.env.DB_NAME}?retryWrites=true&w=majority&appName=${process.env.DB_APPNAME}`;
-        await mongoose.connect(connectionString);
-    }
+  async connectDB() {
+    try {
+      const connectionString = `mongodb+srv://${process.env.USER_DB}:${process.env.PASSWORD_DB}@${process.env.SERVER_DB}/${process.env.DB_NAME}?retryWrites=true&w=majority&appName=develop`;
+      console.log("aqui");
+      await mongoose.connect(connectionString, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      });
 
-    async closeConnection(){
-        await mongoose.disconnect();
+      console.log("✅ Database connected successfully");
+
+      mongoose.connection.on("error", (err) => {
+        console.error("❌ Database connection error:", err);
+      });
+
+      mongoose.connection.on("disconnected", () => {
+        console.warn("⚠️ Database disconnected");
+      });
+    } catch (error) {
+      console.error("❌ Error connecting to the database:", error);
+      process.exit(1);
     }
+  }
+
+  async closeConnection() {
+    try {
+      await mongoose.disconnect();
+      console.log("⚠️ Database disconnected");
+    } catch (error) {
+      console.error("❌ Error disconnecting from database:", error);
+    }
+  }
 }
 
 export default new databaseClient();

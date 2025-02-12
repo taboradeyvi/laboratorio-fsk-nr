@@ -1,16 +1,51 @@
 import Patient from "../schemas/patient.js";
+import mongoose from "mongoose";
 
 class PatientService {
   async create(patient) {
+    const exists = await Patient.exists({
+      firstName: patient.firstName,
+      lastName: patient.lastName,
+    });
+
+    if (exists) {
+      const error = new Error("Patient already exists");
+      error.status = 400;
+      throw error;
+    }
+
     return await Patient.create(patient);
   }
 
   async update(id, patient) {
-    return await Patient.findOneAndUpdate(id, patient, { new: true });
+    const exists = await Patient.exists({
+      firstName: patient.firstName,
+      lastName: patient.lastName,
+      _id: { $ne: id },
+    });
+
+    if (exists) {
+      const error = new Error(
+        `There is already a patient with a name ${
+          patient.firstName + " " + patient.lastName
+        }`
+      );
+
+      error.status = 400;
+      throw error;
+    }
+    return await Patient.findOneAndUpdate({ _id: id }, patient, { new: true });
   }
 
   async delete(id) {
-    return await Patient.findOneAndDelete(id);
+    const exists = await Patient.findById(id);
+    console.log(exists);
+    if (exists === null) {
+      const error = new Error("Patient not found");
+      error.status = 404;
+      throw error;
+    }
+    return await Patient.deleteOne({ _id: id });
   }
 
   async getAll() {
@@ -18,7 +53,13 @@ class PatientService {
   }
 
   async getById(id) {
-    return await Patient.findById(id);
+    const exists = await Patient.findById(id);
+    if (exists === null) {
+      const error = new Error("Patient not found");
+      error.status = 404;
+      throw error;
+    }
+    return exists;
   }
 }
 
