@@ -37,6 +37,18 @@ class PatientService {
     return await patientSchema.updateOne({ _id: id }, patient, { new: true });
   }
 
+  async addSymptoms(patientId, symptoms) {
+    const patient = await patientSchema.findById(patientId);
+    if (!patient) {
+      throw new Error("Patient not found");
+    }
+
+    patient.symptoms = [...new Set([...patient.symptoms, ...symptoms])];
+
+    await patient.save();
+    return patient;
+  }
+
   async delete(id) {
     const exists = await patientSchema.findById(id);
     if (exists === null) {

@@ -51,7 +51,7 @@ const patientSchema = new Schema(
       },
     ],
   },
-  { timestamps: true, collection: "patients" }
+  { timestamps: true }
 );
 
 const patient = mongoose.model("Patient", patientSchema);

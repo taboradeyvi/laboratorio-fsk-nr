@@ -14,7 +14,7 @@ const symptomSchema = new Schema(
       required: [true, "Description is required"],
     },
   },
-  { timestamps: true, collection: "symptoms" }
+  { timestamps: true }
 );
 
 const symptom = mongoose.model("Symptom", symptomSchema);

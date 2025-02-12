@@ -1,5 +1,6 @@
 import "dotenv/config";
 import express from "express";
+import cors from "cors";
 import bodyParser from "body-parser";
 import swaggerSetup from "./src/config/swagger.js";
 import patientRoutes from "./src/routes/patient.js";
@@ -9,7 +10,7 @@ import "./src/config/database.js";
 import errorHandler from "./src/middlewares/errorHandler.js";
 
 const app = express();
-
+app.use(cors());
 app.use(bodyParser.json());
 
 swaggerSetup(app);

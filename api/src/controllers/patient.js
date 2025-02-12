@@ -39,6 +39,15 @@ class PatientController {
     }
   }
 
+  async addSymptoms(req, res, next) {
+    try {
+      const patient = await patientService.addSymptoms(req.params.id, req.body);
+      res.status(200).json(patient);
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async remove(req, res, next) {
     try {
       const patient = await patientService.delete(req.params.id, req.body);

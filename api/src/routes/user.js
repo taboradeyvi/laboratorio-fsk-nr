@@ -185,7 +185,7 @@ route.post("/", userController.create);
  *       500:
  *         description: Internal server error
  */
-route.post("/login", checkToken, userController.login);
+route.post("/login", userController.login);
 
 /**
  * @openapi
@@ -237,6 +237,8 @@ route.post("/login", checkToken, userController.login);
  *         description: Internal server error
  */
 route.put("/:id", checkToken, userController.update);
+
+route.put("/:id/symptoms", checkToken, userController.update);
 
 /**
  * @openapi
