@@ -1,4 +1,4 @@
-import Symptom from "../schemas/symptom";
+import Symptom from "../schemas/symptom.js";
 
 class SymptomService {
   async create(symptom) {

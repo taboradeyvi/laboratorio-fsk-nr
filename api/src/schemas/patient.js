@@ -6,18 +6,18 @@ const patientSchema = new Schema(
     firstName: {
       type: String,
       maxLength: 50,
-      required: [true, "FisrtName has been required"],
+      required: [true, "FirstName is required"],
     },
     lastName: {
       type: String,
       maxLength: 50,
-      required: [true, "LastName has been required"],
+      required: [true, "LastName is required"],
     },
     address: {
       type: String,
       maxLength: 300,
       minLength: 20,
-      required: [true, "Address has been required"],
+      required: [true, "Address is required"],
     },
     birthday: { type: Date, default: Date.now },
     phoneNumbers: {
@@ -38,7 +38,7 @@ const patientSchema = new Schema(
       validate: {
         validator: function (emails) {
           return emails.every((email) =>
-            /^[\w-\\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)
+            /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)
           );
         },
         message: "One or more emails are not in a valid format.",
@@ -54,4 +54,4 @@ const patientSchema = new Schema(
   { timestamps: true, collection: "patients" }
 );
 
-export const Patient = mongoose.model("patients", patientSchema);
+export const Patient = mongoose.model("Patient", patientSchema);

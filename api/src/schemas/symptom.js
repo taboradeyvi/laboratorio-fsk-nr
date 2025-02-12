@@ -6,12 +6,12 @@ const symptomSchema = new Schema(
     name: {
       type: String,
       maxLength: 150,
-      required: [true, "Name has been required"],
+      required: [true, "Name is required"],
     },
     description: {
       type: String,
       maxLength: 600,
-      required: [true, "Description has been required"],
+      required: [true, "Description is required"],
     },
   },
   { timestamps: true, collection: "symptoms" }
