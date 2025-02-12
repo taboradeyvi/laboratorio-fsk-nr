@@ -2,8 +2,8 @@ import Symptom from "../schemas/symptom.js";
 
 class SymptomService {
   async create(symptom) {
-    const symptom = await Symptom.exists({ name: symptom.name });
-    if (symptom) {
+    const exists = await Symptom.exists({ name: symptom.name });
+    if (exists) {
       const error = new Error(`${symptom.name} already exists`);
       error.status = 400;
       throw error;
@@ -13,12 +13,12 @@ class SymptomService {
   }
 
   async update(id, symptom) {
-    const symptom = await Symptom.exists({
+    const exists = await Symptom.exists({
       name: symptom.name,
       _id: { $ne: id },
     });
 
-    if (symptom) {
+    if (exists) {
       const error = new Error(
         `There is already a symptom with a name ${symptom.name}`
       );

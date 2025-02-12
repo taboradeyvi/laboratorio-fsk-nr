@@ -203,7 +203,7 @@ route.post("/", userController.create);
  *       500:
  *         description: Internal server error
  */
-route.post("/login", userController.login);
+// route.post("/login", userController.login);
 
 /**
  * @openapi
