@@ -1,0 +1,93 @@
+<div class="flex justify-between mb-4">
+  <h1 class="text-xl font-semibold">User List</h1>
+  <button
+    (click)="newRegister()"
+    class="bg-green-500 text-white px-4 py-2 rounded-md shadow-md"
+  >
+    Add new
+  </button>
+</div>
+
+<table
+  class="w-full text-sm border-collapse shadow-md rounded-lg overflow-hidden"
+>
+  <thead>
+    <tr class="bg-slate-600 text-white">
+      <th class="border p-3 text-left">Username</th>
+      <th class="border p-3 text-left">Email</th>
+      <th class="border p-3 text-left">PhoneNumber</th>
+      <th class="border p-3 text-left">Role</th>
+      <th class="border p-3 text-center">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngIf="isLoading">
+      <tr *ngFor="let i of [1, 2, 3, 4, 5]" class="animate-pulse">
+        <td class="border p-3">
+          <div class="h-4 bg-gray-300 rounded w-3/4"></div>
+        </td>
+        <td class="border p-3">
+          <div class="h-4 bg-gray-300 rounded w-3/4"></div>
+        </td>
+        <td class="border p-3">
+          <div class="h-4 bg-gray-300 rounded w-3/4"></div>
+        </td>
+        <td class="border p-3">
+          <div class="h-4 bg-gray-300 rounded w-3/4"></div>
+        </td>
+        <td class="border p-3 text-center">
+          <div class="flex justify-center gap-2">
+            <div class="h-6 w-12 bg-gray-300 rounded"></div>
+            <div class="h-6 w-12 bg-gray-300 rounded"></div>
+          </div>
+        </td>
+      </tr>
+    </ng-container>
+
+    <ng-container *ngIf="!isLoading">
+      <tr
+        *ngFor="let user of users"
+        class="odd:bg-gray-100 even:bg-white hover:bg-gray-200 transition"
+      >
+        <td class="border p-3 whitespace-nowrap">{{ user.userName }}</td>
+        <td class="border p-3 whitespace-nowrap">{{ user.email }}</td>
+        <td class="border p-3 whitespace-nowrap">{{ user.phoneNumber }}</td>
+        <td class="border p-3 whitespace-nowrap">{{ user.role }}</td>
+        <td class="border p-3 text-center">
+          <div class="flex justify-center gap-2">
+            <button
+              (click)="editUser(user._id)"
+              class="bg-yellow-500 text-white px-3 py-1 rounded-md text-xs shadow-md hover:bg-yellow-600 transition"
+            >
+              Edit
+            </button>
+            <button
+              (click)="deleteUser(user._id)"
+              class="bg-red-500 text-white px-3 py-1 rounded-md text-xs shadow-md hover:bg-red-600 transition"
+            >
+              Delete
+            </button>
+          </div>
+        </td>
+      </tr>
+    </ng-container>
+  </tbody>
+</table>
+
+<div class="flex justify-center items-center gap-4 mt-4">
+  <button
+    (click)="prevPage()"
+    [disabled]="currentPage === 1"
+    class="bg-gray-500 text-white px-4 py-2 rounded-md"
+  >
+    Prev
+  </button>
+  <span>Page {{ currentPage }} of {{ totalPages }}</span>
+  <button
+    (click)="nextPage()"
+    [disabled]="currentPage >= totalPages"
+    class="bg-gray-500 text-white px-4 py-2 rounded-md"
+  >
+    Next
+  </button>
+</div>

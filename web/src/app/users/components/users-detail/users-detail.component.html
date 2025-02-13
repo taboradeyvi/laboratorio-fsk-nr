@@ -1,0 +1,165 @@
+<div class="max-w-5xl mx-auto bg-white p-6 rounded-lg shadow-md">
+  <h2 class="text-xl font-semibold mb-4">
+    {{ isEditMode ? "Edit User" : "New User" }}
+  </h2>
+
+  <form
+    class="grid grid-cols-2 gap-y-2 gap-x-6"
+    [formGroup]="userForm"
+    (ngSubmit)="saveUser()"
+  >
+    <div class="mb-3">
+      <label class="block text-sm font-medium">First Name</label>
+      <input
+        type="text"
+        formControlName="firstName"
+        class="w-full p-2 border rounded"
+      />
+      <div
+        *ngIf="
+          userForm.get('firstName')?.touched &&
+          userForm.get('firstName')?.invalid
+        "
+        class="text-red-500 text-sm mt-1"
+      >
+        <div *ngIf="userForm.get('firstName')?.hasError('required')">
+          First name is required
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="block text-sm font-medium">Last Name</label>
+      <input
+        type="text"
+        formControlName="lastName"
+        class="w-full p-2 border rounded"
+      />
+      <div
+        *ngIf="
+          userForm.get('lastName')?.touched && userForm.get('lastName')?.invalid
+        "
+        class="text-red-500 text-sm mt-1"
+      >
+        <div *ngIf="userForm.get('lastName')?.hasError('required')">
+          Last name is required
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="block text-sm font-medium">Username</label>
+      <input
+        type="text"
+        formControlName="userName"
+        class="w-full p-2 border rounded"
+      />
+      <div
+        *ngIf="
+          userForm.get('userName')?.touched && userForm.get('userName')?.invalid
+        "
+        class="text-red-500 text-sm mt-1"
+      >
+        <div *ngIf="userForm.get('userName')?.hasError('required')">
+          Username is required
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="block text-sm font-medium">Email</label>
+      <input
+        type="email"
+        formControlName="email"
+        class="w-full p-2 border rounded"
+      />
+      <div
+        *ngIf="userForm.get('email')?.touched && userForm.get('email')?.invalid"
+        class="text-red-500 text-sm mt-1"
+      >
+        <div *ngIf="userForm.get('email')?.hasError('required')">
+          Email is required
+        </div>
+        <div *ngIf="userForm.get('email')?.hasError('email')">
+          Invalid email format
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="block text-sm font-medium">Phone Number</label>
+      <input
+        type="text"
+        formControlName="phoneNumber"
+        class="w-full p-2 border rounded"
+      />
+      <div
+        *ngIf="
+          userForm.get('phoneNumber')?.touched &&
+          userForm.get('phoneNumber')?.invalid
+        "
+        class="text-red-500 text-sm mt-1"
+      >
+        <div *ngIf="userForm.get('phoneNumber')?.hasError('required')">
+          Phone number is required
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="block text-sm font-medium">Role</label>
+      <select formControlName="role" class="w-full p-2 border rounded">
+        <option value="admin">Admin</option>
+        <option value="user">User</option>
+      </select>
+      <div
+        *ngIf="userForm.get('role')?.touched && userForm.get('role')?.invalid"
+        class="text-red-500 text-sm mt-1"
+      >
+        <div *ngIf="userForm.get('role')?.hasError('required')">
+          Role is required
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-3" *ngIf="!isEditMode">
+      <label class="block text-sm font-medium">Password</label>
+      <input
+        type="password"
+        formControlName="password"
+        class="w-full p-2 border rounded"
+      />
+      <div
+        *ngIf="
+          userForm.get('password')?.touched && userForm.get('password')?.invalid
+        "
+        class="text-red-500 text-sm mt-1"
+      >
+        <div *ngIf="userForm.get('password')?.hasError('required')">
+          Password is required
+        </div>
+        <div *ngIf="userForm.get('password')?.hasError('minlength')">
+          Password must be at least 6 characters
+        </div>
+      </div>
+    </div>
+
+    <div class="flex col-span-2 justify-end gap-4 mt-6">
+      <button
+        type="submit"
+        class="bg-green-600 hover:bg-green-700 text-white font-medium px-5 py-2.5 rounded-lg shadow-md transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+        [disabled]="userForm.invalid"
+      >
+        {{ isEditMode ? "Update" : "Create" }}
+      </button>
+
+      <button
+        type="button"
+        (click)="cancel()"
+        class="bg-gray-500 hover:bg-gray-600 text-white font-medium px-5 py-2.5 rounded-lg shadow-md transition duration-300"
+      >
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>
