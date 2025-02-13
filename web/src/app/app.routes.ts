@@ -24,6 +24,14 @@ export const routes: Routes = [
         path: 'patients',
         component: PatientsListComponent,
       },
+      {
+        path: 'patients/new',
+        component: PatientsDetailComponent,
+      },
+      {
+        path: 'patients/edit/:id',
+        component: PatientsDetailComponent,
+      },
     ],
   },
   {
