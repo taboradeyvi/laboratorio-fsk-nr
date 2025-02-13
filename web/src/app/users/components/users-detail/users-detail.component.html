@@ -4,7 +4,7 @@
   </h2>
 
   <form
-    class="grid grid-cols-2 gap-6"
+    class="grid grid-cols-2 gap-y-2 gap-x-6"
     [formGroup]="userForm"
     (ngSubmit)="saveUser()"
   >
@@ -144,18 +144,19 @@
       </div>
     </div>
 
-    <div class="flex gap-3 mt-4">
+    <div class="flex col-span-2 justify-end gap-4 mt-6">
       <button
         type="submit"
-        class="bg-green-500 text-white px-4 py-2 rounded-md"
+        class="bg-green-600 hover:bg-green-700 text-white font-medium px-5 py-2.5 rounded-lg shadow-md transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
         [disabled]="userForm.invalid"
       >
         {{ isEditMode ? "Update" : "Create" }}
       </button>
+
       <button
         type="button"
         (click)="cancel()"
-        class="bg-gray-500 text-white px-4 py-2 rounded-md"
+        class="bg-gray-500 hover:bg-gray-600 text-white font-medium px-5 py-2.5 rounded-lg shadow-md transition duration-300"
       >
         Cancel
       </button>
