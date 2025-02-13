@@ -1,1 +1,66 @@
-<p>symptoms-detail works!</p>
+<div class="max-w-5xl mx-auto bg-white p-6 rounded-lg shadow-md">
+  <h2 class="text-xl font-semibold mb-4">
+    {{ isEditMode ? "Edit Symptom" : "New Symptom" }}
+  </h2>
+
+  <form
+    class="grid grid-cols-1 gap-6"
+    [formGroup]="symptomForm"
+    (ngSubmit)="saveSymptom()"
+  >
+    <div class="mb-3">
+      <label class="block text-sm font-medium">Name</label>
+      <input
+        type="text"
+        formControlName="name"
+        class="w-full p-2 border rounded"
+      />
+      <div
+        *ngIf="
+          symptomForm.get('name')?.touched && symptomForm.get('name')?.invalid
+        "
+        class="text-red-500 text-sm mt-1"
+      >
+        <div *ngIf="symptomForm.get('name')?.hasError('required')">
+          Name is required
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="block text-sm font-medium">Description</label>
+      <textarea
+        formControlName="description"
+        class="w-full p-2 border rounded"
+      ></textarea>
+      <div
+        *ngIf="
+          symptomForm.get('description')?.touched &&
+          symptomForm.get('description')?.invalid
+        "
+        class="text-red-500 text-sm mt-1"
+      >
+        <div *ngIf="symptomForm.get('description')?.hasError('required')">
+          Description is required
+        </div>
+      </div>
+    </div>
+
+    <div class="flex gap-3 mt-4">
+      <button
+        type="submit"
+        class="bg-green-500 text-white px-4 py-2 rounded-md"
+        [disabled]="symptomForm.invalid"
+      >
+        {{ isEditMode ? "Update" : "Create" }}
+      </button>
+      <button
+        type="button"
+        (click)="cancel()"
+        class="bg-gray-500 text-white px-4 py-2 rounded-md"
+      >
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>

@@ -4,6 +4,8 @@ import { LayoutComponent } from './layout/layout.component';
 import { AuthGuard } from './guards/auth.guard';
 import { PatientsListComponent } from './patients/components/patients-list/patients-list.component';
 import { PatientsDetailComponent } from './patients/components/patients-detail/patients-detail.component';
+import { SymptomsListComponent } from './symptoms/components/symptoms-list/symptoms-list.component';
+import { SymptomsDetailComponent } from './symptoms/components/symptoms-detail/symptoms-detail.component';
 
 export const routes: Routes = [
   {
@@ -31,6 +33,18 @@ export const routes: Routes = [
       {
         path: 'patients/edit/:id',
         component: PatientsDetailComponent,
+      },
+      {
+        path: 'symptoms',
+        component: SymptomsListComponent,
+      },
+      {
+        path: 'symptoms/new',
+        component: SymptomsDetailComponent,
+      },
+      {
+        path: 'symptoms/edit/:id',
+        component: SymptomsDetailComponent,
       },
     ],
   },

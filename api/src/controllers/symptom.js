@@ -26,10 +26,10 @@ class SymptomController {
       const totalSymptoms = await symptomService.count();
 
       res.status(200).json({
-        symptoms,
+        data: symptoms,
         totalPages: Math.ceil(totalSymptoms / limit),
         currentPage: page,
-        totalSymptoms,
+        titalItems: totalSymptoms,
       });
     } catch (error) {
       next(error);
