@@ -1,7 +1,7 @@
 import "dotenv/config";
 import jsonwebtoken from "jsonwebtoken";
 
-export function generateToken({ userName, email, role }) {
+export function generateToken(userName, email, role) {
   return jsonwebtoken.sign(
     { userName, email, role },
     process.env.JWT_SECRET_KEY,
@@ -17,7 +17,10 @@ export function checkToken(req, res, next) {
     return res.status(401).json({ error: "Unauthorized" });
   }
   try {
-    jsonwebtoken.verify(token, process.env.JWT_SECRET_KEY);
+    const data = jsonwebtoken.verify(token, process.env.JWT_SECRET_KEY);
+    if (data.role !== "admin") {
+      return res.status(403).json({ error: "Forbidden: Admin role required" });
+    }
     next();
   } catch (error) {
     return res.status(401).json({ error: "Unauthorized" });

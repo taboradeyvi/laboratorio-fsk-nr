@@ -1,4 +1,5 @@
 import symptomSchema from "../schemas/symptom.js";
+import patientSchema from "../schemas/patient.js";
 
 class SymptomService {
   async create(symptom) {
@@ -43,6 +44,27 @@ class SymptomService {
 
   async getAll(skip, limit) {
     return await symptomSchema.find().skip(skip).limit(limit);
+  }
+
+  async getAvailableSymptoms(patientId) {
+    const exists = await patientSchema.findById(patientId);
+    if (exists === null) {
+      const error = new Error("Patient not found");
+      error.status = 404;
+      throw error;
+    }
+
+    const allSymptoms = await symptomSchema.find();
+
+    const patientSymptoms = exists.symptoms.map((symptom) =>
+      symptom._id.toString()
+    );
+
+    const availableSymptoms = allSymptoms.filter(
+      (symptom) => !patientSymptoms.includes(symptom._id.toString())
+    );
+
+    return availableSymptoms;
   }
 
   async count() {

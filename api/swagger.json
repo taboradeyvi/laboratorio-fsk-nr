@@ -315,6 +315,73 @@
         }
       }
     },
+    "/patients/{patientId}/symptoms": {
+      "post": {
+        "summary": "Add symptoms to a patient",
+        "description": "Adds one or more symptoms to a specific patient.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "patientId",
+            "required": true,
+            "description": "The ID of the patient to whom the symptoms will be added",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "An array of symptom IDs to add to the patient",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "symptomIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "example": [
+                      "5f8f8f8f8f8f8f8f8f8f8f8f",
+                      "5f8f8f8f8f8f8f8f8f8f8f8g"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Symptoms successfully added to the patient",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Symptoms added to patient successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request, e.g., missing symptom IDs"
+          },
+          "404": {
+            "description": "Patient not found or one of the symptoms doesn't exist"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
     "/symptoms": {
       "get": {
         "summary": "Get all symptoms",
@@ -534,6 +601,68 @@
           },
           "404": {
             "description": "Symptom not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/symptoms/{id}/available": {
+      "get": {
+        "summary": "Get symptoms not assigned to a patient",
+        "tags": [
+          "Patients"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Patient ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Symptoms not assigned to the patient",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "availableSymptoms": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "_id": {
+                            "type": "string",
+                            "description": "Symptom ID"
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "Symptom name"
+                          },
+                          "description": {
+                            "type": "string",
+                            "description": "Symptom description"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request, possibly invalid parameters"
+          },
+          "404": {
+            "description": "Patient not found"
           },
           "500": {
             "description": "Internal server error"

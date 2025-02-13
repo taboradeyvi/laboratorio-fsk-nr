@@ -21,7 +21,7 @@ class UserController {
 
       const skip = (page - 1) * limit;
 
-      const users = await symptomService.getAll(skip, limit);
+      const users = await userService.getAll(skip, limit);
 
       const totalUsers = await userService.count();
 

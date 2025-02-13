@@ -37,10 +37,12 @@ class PatientService {
     return await patientSchema.updateOne({ _id: id }, patient, { new: true });
   }
 
-  async addSymptoms(patientId, symptoms) {
-    const patient = await patientSchema.findById(patientId);
+  async addSymptoms(id, symptoms) {
+    const patient = await patientSchema.findById(id);
     if (!patient) {
-      throw new Error("Patient not found");
+      const error = new Error("Patient not found");
+      error.status = 404;
+      throw error;
     }
 
     patient.symptoms = [...new Set([...patient.symptoms, ...symptoms])];
@@ -69,7 +71,7 @@ class PatientService {
   }
 
   async getById(id) {
-    const exists = await patientSchema.findById(id);
+    const exists = await patientSchema.findById(id).populate("symptoms");
     if (exists === null) {
       const error = new Error("Patient not found");
       error.status = 404;

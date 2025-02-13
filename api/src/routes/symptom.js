@@ -83,6 +83,50 @@ route.get("/:id", checkToken, symptomController.getById);
 
 /**
  * @openapi
+ * /symptoms/{id}/available:
+ *   get:
+ *     summary: Get symptoms not assigned to a patient
+ *     tags: [Patients]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Patient ID
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Symptoms not assigned to the patient
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 availableSymptoms:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                         description: Symptom ID
+ *                       name:
+ *                         type: string
+ *                         description: Symptom name
+ *                       description:
+ *                         type: string
+ *                         description: Symptom description
+ *       400:
+ *         description: Invalid request, possibly invalid parameters
+ *       404:
+ *         description: Patient not found
+ *       500:
+ *         description: Internal server error
+ */
+route.get("/:id/available", checkToken, symptomController.getAvailableSymptoms);
+
+/**
+ * @openapi
  * /symptoms:
  *   post:
  *     summary: Create a new symptom

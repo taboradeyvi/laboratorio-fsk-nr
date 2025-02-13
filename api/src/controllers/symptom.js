@@ -36,6 +36,17 @@ class SymptomController {
     }
   }
 
+  async getAvailableSymptoms(req, res, next) {
+    try {
+      const patientId = req.params.id;
+
+      const symptoms = await symptomService.getAvailableSymptoms(patientId);
+      res.status(200).json(symptoms);
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async create(req, res, next) {
     try {
       const symptom = await symptomService.create(req.body);

@@ -238,8 +238,6 @@ route.post("/login", userController.login);
  */
 route.put("/:id", checkToken, userController.update);
 
-route.put("/:id/symptoms", checkToken, userController.update);
-
 /**
  * @openapi
  * /users/{id}:

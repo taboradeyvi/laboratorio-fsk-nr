@@ -56,8 +56,21 @@ class PatientController {
 
   async addSymptoms(req, res, next) {
     try {
-      const patient = await patientService.addSymptoms(req.params.id, req.body);
-      res.status(200).json(patient);
+      if (!req.body.symptoms || !Array.isArray(req.body.symptoms)) {
+        return res
+          .status(400)
+          .json({ message: "Symptoms must be provided as an array." });
+      }
+
+      const patient = await patientService.addSymptoms(
+        req.params.id,
+        req.body.symptoms
+      );
+
+      res.status(200).json({
+        message: "Symptoms added successfully",
+        patient,
+      });
     } catch (error) {
       next(error);
     }

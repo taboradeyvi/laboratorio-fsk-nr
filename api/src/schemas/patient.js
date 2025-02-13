@@ -47,7 +47,7 @@ const patientSchema = new Schema(
     symptoms: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "symptoms",
+        ref: "Symptom",
       },
     ],
   },
