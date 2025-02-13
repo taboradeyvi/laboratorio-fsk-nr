@@ -6,6 +6,8 @@ import { PatientsListComponent } from './patients/components/patients-list/patie
 import { PatientsDetailComponent } from './patients/components/patients-detail/patients-detail.component';
 import { SymptomsListComponent } from './symptoms/components/symptoms-list/symptoms-list.component';
 import { SymptomsDetailComponent } from './symptoms/components/symptoms-detail/symptoms-detail.component';
+import { UsersListComponent } from './users/components/users-list/users-list.component';
+import { UsersDetailComponent } from './users/components/users-detail/users-detail.component';
 
 export const routes: Routes = [
   {
@@ -45,6 +47,18 @@ export const routes: Routes = [
       {
         path: 'symptoms/edit/:id',
         component: SymptomsDetailComponent,
+      },
+      {
+        path: 'users',
+        component: UsersListComponent,
+      },
+      {
+        path: 'users/new',
+        component: UsersDetailComponent,
+      },
+      {
+        path: 'users/edit/:id',
+        component: UsersDetailComponent,
       },
     ],
   },

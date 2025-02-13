@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from '../models/user';
 import { BaseApiService } from './base-api.service';
+import { PaginatedResponse } from '../models/paginated-response';
 
 @Injectable({
   providedIn: 'root',
@@ -9,8 +10,14 @@ import { BaseApiService } from './base-api.service';
 export class UserService {
   constructor(private apiService: BaseApiService) {}
 
-  getAllUsers(): Observable<User[]> {
-    return this.apiService.get<User[]>('users', true);
+  getAllUsers(
+    page: number = 1,
+    limit: number = 10
+  ): Observable<PaginatedResponse<User>> {
+    return this.apiService.get<PaginatedResponse<User>>(
+      `users?page=${page}&limit=${limit}`,
+      true
+    );
   }
 
   getUserById(id: string): Observable<User> {

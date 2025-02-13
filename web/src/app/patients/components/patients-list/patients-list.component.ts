@@ -38,7 +38,7 @@ export class PatientsListComponent implements OnInit {
           this.isLoading = false;
           this.patients = response.data;
           this.totalPages = response.totalPages;
-          this.totalPatients = response.titalItems;
+          this.totalPatients = response.totalItems;
         },
         error: (err) => {
           this.isLoading = false;

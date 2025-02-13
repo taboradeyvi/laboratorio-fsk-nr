@@ -38,7 +38,7 @@ export class SymptomsListComponent {
           this.isLoading = false;
           this.symptoms = response.data;
           this.totalPages = response.totalPages;
-          this.totalSymptoms = response.titalItems;
+          this.totalSymptoms = response.totalItems;
         },
         error: (err) => {
           this.isLoading = false;

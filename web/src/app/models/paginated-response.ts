@@ -1,6 +1,6 @@
 export interface PaginatedResponse<T> {
   currentPage: number;
   totalPages: number;
-  titalItems: number;
+  totalItems: number;
   data: T[];
 }
