@@ -1,0 +1,31 @@
+<div class="flex justify-between mb-4">
+    <h1 class="text-xl font-semibold">Patient List</h1>
+    <!-- (click)="router.navigate(['/home/patients/create'])" -->
+    <button class="bg-blue-500 text-white px-4 py-2 rounded-md">
+        Add New Patient
+    </button>
+</div>
+
+<table class="min-w-full table-auto">
+    <thead>
+        <tr>
+            <th class="border px-4 py-2">Name</th>
+            <th class="border px-4 py-2">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let patient of patients">
+            <td class="border px-4 py-2">{{ patient.firstName }} {{ patient.lastName }}</td>
+            <td class="border px-4 py-2">
+                <!-- <button (click)="router.navigate(['/home/patients/edit', patient.id])"
+                    class="bg-yellow-500 text-white px-4 py-2 rounded-md">
+                    Edit
+                </button> -->
+                <button (click)="deletePatient(patient.id)" class="bg-red-500 text-white px-4 py-2 rounded-md">
+                    Delete
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
