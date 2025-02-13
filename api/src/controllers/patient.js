@@ -29,7 +29,7 @@ class PatientController {
         data: patients,
         totalPages: Math.ceil(totalPatients / limit),
         currentPage: page,
-        titalItems: totalPatients,
+        totalItems: totalPatients,
       });
     } catch (error) {
       next(error);

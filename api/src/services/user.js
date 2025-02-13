@@ -14,7 +14,7 @@ class UserSerive {
     await userUtil.checkIfExists("userName", user.userName, id);
     await userUtil.checkIfExists("email", user.email, id);
     await userUtil.checkIfExists("phoneNumber", user.phoneNumber, id);
-    return await userSchema.updateOne({ _id: id }, patient, { new: true });
+    return await userSchema.updateOne({ _id: id }, user, { new: true });
   }
 
   async delete(id) {

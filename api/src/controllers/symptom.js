@@ -29,7 +29,7 @@ class SymptomController {
         data: symptoms,
         totalPages: Math.ceil(totalSymptoms / limit),
         currentPage: page,
-        titalItems: totalSymptoms,
+        totalItems: totalSymptoms,
       });
     } catch (error) {
       next(error);

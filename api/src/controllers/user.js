@@ -26,10 +26,10 @@ class UserController {
       const totalUsers = await userService.count();
 
       res.status(200).json({
-        users,
+        data: users,
         totalPages: Math.ceil(totalUsers / limit),
         currentPage: page,
-        totalUsers,
+        totalItems: totalUsers,
       });
     } catch (error) {
       next(error);
