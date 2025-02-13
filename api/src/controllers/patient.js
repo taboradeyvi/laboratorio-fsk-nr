@@ -26,10 +26,10 @@ class PatientController {
       const totalPatients = await patientService.count();
 
       res.status(200).json({
-        patients,
+        data: patients,
         totalPages: Math.ceil(totalPatients / limit),
         currentPage: page,
-        totalPatients,
+        titalItems: totalPatients,
       });
     } catch (error) {
       next(error);
