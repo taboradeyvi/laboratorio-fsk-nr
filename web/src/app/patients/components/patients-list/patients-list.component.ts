@@ -64,7 +64,6 @@ export class PatientsListComponent implements OnInit {
     });
   }
 
-  // Métodos de paginación
   nextPage() {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;

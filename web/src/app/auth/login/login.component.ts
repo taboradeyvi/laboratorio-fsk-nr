@@ -8,6 +8,7 @@ import {
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { AlertService } from '../../services/alert';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +23,8 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private alertService: AlertService
   ) {
     this.loginForm = this.fb.group({
       userName: ['', [Validators.required]],
@@ -35,14 +37,20 @@ export class LoginComponent {
       return;
     }
 
-    this.authService.login(this.loginForm.value).subscribe(
-      (response) => {
-        localStorage.setItem('token', response.token);
-        this.router.navigate(['/home/patients']);
+    this.authService.login(this.loginForm.value).subscribe({
+      next: (response) => {
+        if (response.role !== 'user') {
+          localStorage.setItem('token', response.token);
+          this.router.navigate(['/home/patients']);
+        } else {
+          this.alertService.error('Forbidden ' + 'Admin role required');
+        }
       },
-      (error) => {
-        console.error('Login failed', error);
-      }
-    );
+      error: (error) => {
+        this.alertService.error(
+          'Login failed: ' + (error.error?.message || 'Unknown error')
+        );
+      },
+    });
   }
 }

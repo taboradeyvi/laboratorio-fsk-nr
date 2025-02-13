@@ -20,6 +20,13 @@ export class SymptomService {
     );
   }
 
+  getAvailableSymptoms(patientId: string): Observable<Symptom[]> {
+    return this.apiService.get<Symptom[]>(
+      `symptoms/${patientId}/available`,
+      true
+    );
+  }
+
   getSymptomById(id: string): Observable<Symptom> {
     return this.apiService.get<Symptom>(`symptoms/${id}`, true);
   }

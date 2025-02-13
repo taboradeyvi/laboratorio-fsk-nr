@@ -48,19 +48,19 @@ export class SymptomsDetailComponent implements OnInit {
   loadSymptom() {
     if (!this.symptomId) return;
 
-    this.symptomService.getSymptomById(this.symptomId!).subscribe(
-      (symptom: Symptom) => {
+    this.symptomService.getSymptomById(this.symptomId!).subscribe({
+      next: (symptom: Symptom) => {
         this.symptomForm.patchValue({
           name: symptom.name,
           description: symptom.description,
         });
       },
-      (err) => {
+      error: (err) => {
         this.alertService.error(
           'Error loading symptom: ' + (err.error?.message || 'Unknown error')
         );
-      }
-    );
+      },
+    });
   }
 
   saveSymptom() {
@@ -69,29 +69,30 @@ export class SymptomsDetailComponent implements OnInit {
     const symptomData: Symptom = this.symptomForm.value;
 
     if (this.isEditMode) {
-      this.symptomService.updateSymptom(this.symptomId!, symptomData).subscribe(
-        () => {
-          this.alertService.success('Successfully updated');
-          this.router.navigate(['/home/symptoms']);
-        },
-        (err) => {
-          this.alertService.error(
-            'Update failed: ' + (err.error?.message || 'Unknown error')
-          );
-        }
-      );
+      this.symptomService
+        .updateSymptom(this.symptomId!, symptomData)
+        .subscribe({
+          next: () => {
+            this.alertService.success('Successfully updated');
+          },
+          error: (err) => {
+            this.alertService.error(
+              'Update failed: ' + (err.error?.message || 'Unknown error')
+            );
+          },
+        });
     } else {
-      this.symptomService.createSymptom(symptomData).subscribe(
-        () => {
+      this.symptomService.createSymptom(symptomData).subscribe({
+        next: () => {
           this.alertService.success('Successfully created');
           this.router.navigate(['/home/symptoms']);
         },
-        (err) => {
+        error: (err) => {
           this.alertService.error(
             'Creation failed: ' + (err.error?.message || 'Unknown error')
           );
-        }
-      );
+        },
+      });
     }
   }
 

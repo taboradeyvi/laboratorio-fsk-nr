@@ -1,49 +1,73 @@
-<div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-        <img class="mx-auto h-10 w-auto"
-            src="https://tailwindui.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600" alt="Your Company">
-        <h2 class="mt-10 text-center text-2xl font-bold tracking-tight text-gray-900">Sign in to your account</h2>
-    </div>
+<div
+  class="flex min-h-screen flex-col justify-center items-center bg-gray-100 px-6 py-12"
+>
+  <div class="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
+    <h2 class="mt-6 text-center text-2xl font-bold text-gray-900">
+      Sign in to your account
+    </h2>
 
-    <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
-            <div>
-                <label for="userName" class="block text-sm font-medium text-gray-900">Username</label>
-                <div class="mt-2">
-                    <input formControlName="userName" id="userName" type="text" autocomplete="userName"
-                        class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600 sm:text-sm" />
-                    <div *ngIf="loginForm.get('userName')?.invalid && loginForm.get('userName')?.touched"
-                        class="text-sm text-red-600">
-                        Username is required.
-                    </div>
-                </div>
-            </div>
+    <form
+      [formGroup]="loginForm"
+      (ngSubmit)="onSubmit()"
+      class="mt-6 space-y-6"
+    >
+      <div>
+        <label for="userName" class="block text-lg font-semibold text-gray-800"
+          >Username</label
+        >
+        <div class="mt-1">
+          <input
+            formControlName="userName"
+            id="userName"
+            type="text"
+            autocomplete="userName"
+            class="block w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+          />
+          <div
+            *ngIf="
+              loginForm.get('userName')?.invalid &&
+              loginForm.get('userName')?.touched
+            "
+            class="text-sm text-red-600 mt-1"
+          >
+            Username is required.
+          </div>
+        </div>
+      </div>
 
-            <div>
-                <div class="flex items-center justify-between">
-                    <label for="password" class="block text-sm font-medium text-gray-900">Password</label>
-                </div>
-                <div class="mt-2">
-                    <input formControlName="password" id="password" type="password" autocomplete="current-password"
-                        class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600 sm:text-sm" />
-                    <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
-                        class="text-sm text-red-600">
-                        Password is required.
-                    </div>
-                </div>
-            </div>
+      <div>
+        <label for="password" class="block text-lg font-semibold text-gray-800"
+          >Password</label
+        >
+        <div class="mt-1">
+          <input
+            formControlName="password"
+            id="password"
+            type="password"
+            autocomplete="current-password"
+            class="block w-full rounded-lg border border-gray-300 bg-gray-50 px-4 py-2 text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+          />
+          <div
+            *ngIf="
+              loginForm.get('password')?.invalid &&
+              loginForm.get('password')?.touched
+            "
+            class="text-sm text-red-600 mt-1"
+          >
+            Password is required.
+          </div>
+        </div>
+      </div>
 
-            <div>
-                <button type="submit" [disabled]="loginForm.invalid"
-                    class="w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-indigo-600">
-                    Sign in
-                </button>
-            </div>
-        </form>
-
-        <p class="mt-10 text-center text-sm text-gray-500">
-            Not a member? <a href="#" class="font-semibold text-indigo-600 hover:text-indigo-500">Start a 14-day free
-                trial</a>
-        </p>
-    </div>
+      <div>
+        <button
+          type="submit"
+          [disabled]="loginForm.invalid"
+          class="w-full rounded-lg bg-indigo-600 px-4 py-2 text-lg font-semibold text-white shadow-md transition-all duration-300 hover:bg-indigo-500 hover:shadow-lg focus:ring-2 focus:ring-indigo-400 disabled:opacity-50"
+        >
+          Sign in
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

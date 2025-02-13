@@ -11,7 +11,6 @@ export class AuthService {
   constructor(private apiService: BaseApiService, private router: Router) {}
 
   login(login: Login): Observable<any> {
-    debugger;
     return this.apiService.post('users/login', login, false);
   }
 

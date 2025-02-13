@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { Patient } from '../../../models/patient';
 import { PatientService } from '../../../services/patient.service';
+import { SymptomService } from '../../../services/symptom.service';
+import { Symptom } from '../../../models/symptom';
 import { AlertService } from '../../../services/alert';
 import {
-  FormArray,
   FormBuilder,
   FormGroup,
-  ReactiveFormsModule,
+  FormArray,
   Validators,
+  ReactiveFormsModule,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -17,16 +18,23 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './patients-detail.component.html',
-  styleUrl: './patients-detail.component.scss',
+  styleUrls: ['./patients-detail.component.scss'],
 })
 export class PatientsDetailComponent implements OnInit {
   patientForm!: FormGroup;
   patientId: string | null = null;
   isEditMode = false;
-
+  availableSymptoms: Symptom[] = [];
+  currentPage = 1;
+  totalSymptoms = 0;
+  symptomsPerPage = 10;
+  selectedSymptoms: string[] = [];
+  patientSymptoms: Symptom[] = [];
+  isModalOpen: boolean = false;
   constructor(
     private fb: FormBuilder,
     private patientService: PatientService,
+    private symptomService: SymptomService,
     private route: ActivatedRoute,
     private router: Router,
     private alertService: AlertService
@@ -43,6 +51,7 @@ export class PatientsDetailComponent implements OnInit {
       birthday: ['', Validators.required],
       phoneNumbers: this.fb.array([]),
       emails: this.fb.array([]),
+      symptoms: this.fb.array([]),
     });
 
     if (this.isEditMode) {
@@ -56,6 +65,23 @@ export class PatientsDetailComponent implements OnInit {
 
   get emails(): FormArray {
     return this.patientForm.get('emails') as FormArray;
+  }
+
+  get symptoms(): FormArray {
+    return this.patientForm.get('symptoms') as FormArray;
+  }
+
+  loadSymptoms(): void {
+    this.symptomService.getAvailableSymptoms(this.patientId!).subscribe({
+      next: (response: Symptom[]) => {
+        this.availableSymptoms = response;
+      },
+      error: (err) => {
+        this.alertService.error(
+          'Error loading symptoms: ' + (err.error?.message || 'Unknown error')
+        );
+      },
+    });
   }
 
   addPhoneNumber(): void {
@@ -81,9 +107,8 @@ export class PatientsDetailComponent implements OnInit {
   }
 
   loadPatient() {
-    this.patientService
-      .getPatientById(this.patientId!)
-      .subscribe((patient: Patient) => {
+    this.patientService.getPatientById(this.patientId!).subscribe({
+      next: (patient) => {
         this.patientForm.patchValue({
           firstName: patient.firstName,
           lastName: patient.lastName,
@@ -93,50 +118,53 @@ export class PatientsDetailComponent implements OnInit {
 
         this.setPhoneNumbers(patient.phoneNumbers || []);
         this.setEmails(patient.emails || []);
-      });
-  }
-
-  private formatDate(isoDate: string): string {
-    return isoDate ? isoDate.split('T')[0] : '';
+        this.patientSymptoms = patient.symptoms || [];
+      },
+      error: (err) => {
+        this.alertService.error(
+          'Error loading patient: ' + (err.error?.message || 'Unknown error')
+        );
+      },
+    });
   }
 
   setPhoneNumbers(phoneNumbers: string[]): void {
     const phoneArray = this.patientForm.get('phoneNumbers') as FormArray;
     phoneArray.clear();
 
-    if (phoneNumbers && phoneNumbers.length > 0) {
-      phoneNumbers.forEach((phone) => {
-        phoneArray.push(this.fb.control(phone, Validators.required));
-      });
-    } else {
-      phoneArray.push(this.fb.control('', Validators.required));
-    }
+    phoneNumbers.forEach((phone) => {
+      phoneArray.push(this.fb.control(phone, Validators.required));
+    });
   }
 
   setEmails(emails: string[]): void {
     const emailArray = this.patientForm.get('emails') as FormArray;
     emailArray.clear();
 
-    if (emails && emails.length > 0) {
-      emails.forEach((email) => {
-        debugger;
-        emailArray.push(
-          this.fb.control(email, [Validators.required, Validators.email])
-        );
-      });
-    } else {
+    emails.forEach((email) => {
       emailArray.push(
-        this.fb.control('', [Validators.required, Validators.email])
+        this.fb.control(email, [Validators.required, Validators.email])
       );
-    }
+    });
+  }
 
-    debugger;
+  setSymptoms(symptoms: string[]): void {
+    const symptomsArray = this.patientForm.get('symptoms') as FormArray;
+    symptomsArray.clear();
+
+    symptoms.forEach((symptomId) => {
+      symptomsArray.push(this.fb.control(symptomId, Validators.required));
+    });
+  }
+
+  formatDate(isoDate: string): string {
+    return isoDate ? isoDate.split('T')[0] : '';
   }
 
   savePatient() {
     if (this.patientForm.invalid) return;
 
-    const patientData: Patient = this.patientForm.value;
+    const patientData = this.patientForm.value;
 
     if (this.isEditMode) {
       this.patientService
@@ -144,11 +172,10 @@ export class PatientsDetailComponent implements OnInit {
         .subscribe({
           next: () => {
             this.alertService.success('Successfully updated');
-            this.router.navigate(['/home/patients']);
           },
           error: (err) => {
             this.alertService.error(
-              'Delete failed: ' + (err.error?.message || 'Unknown error')
+              'Update failed: ' + (err.error?.message || 'Unknown error')
             );
           },
         });
@@ -160,7 +187,7 @@ export class PatientsDetailComponent implements OnInit {
         },
         error: (err) => {
           this.alertService.error(
-            'Delete failed: ' + (err.error?.message || 'Unknown error')
+            'Create failed: ' + (err.error?.message || 'Unknown error')
           );
         },
       });
@@ -169,5 +196,46 @@ export class PatientsDetailComponent implements OnInit {
 
   cancel() {
     this.router.navigate(['/home/patients']);
+  }
+
+  openSymptomModal(): void {
+    this.isModalOpen = true;
+
+    this.loadSymptoms();
+  }
+
+  onSymptomModalChange(symptomId: string, event: any): void {
+    if (event.target.checked) {
+      this.selectedSymptoms.push(symptomId);
+    } else {
+      this.selectedSymptoms = this.selectedSymptoms.filter(
+        (id) => id !== symptomId
+      );
+    }
+  }
+
+  saveSymptoms(): void {
+    if (this.patientId) {
+      this.patientService
+        .addSymptomsToPatient(this.patientId, this.selectedSymptoms)
+        .subscribe({
+          next: (updatedPatient) => {
+            this.availableSymptoms = [];
+            this.closeModal();
+            this.alertService.success('Symptoms added successfully');
+            this.loadPatient();
+          },
+          error: (err) => {
+            this.alertService.error(
+              'Failed to add symptoms: ' +
+                (err.error?.message || 'Unknown error')
+            );
+          },
+        });
+    }
+  }
+
+  closeModal(): void {
+    this.isModalOpen = false;
   }
 }

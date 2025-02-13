@@ -24,7 +24,6 @@
       </button>
     </div>
 
-    <!-- Botón de Logout empujado hacia abajo -->
     <div class="mt-auto px-4 pb-4">
       <button
         (click)="logout()"
@@ -35,7 +34,7 @@
     </div>
   </div>
 
-  <div class="flex-1 p-8">
+  <div class="flex-1 p-8 overflow-auto max-h-screen">
     <router-outlet></router-outlet>
   </div>
 </div>
