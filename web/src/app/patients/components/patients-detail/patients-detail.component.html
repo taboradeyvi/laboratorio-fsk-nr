@@ -15,6 +15,17 @@
         formControlName="firstName"
         class="w-full p-2 border rounded"
       />
+      <div
+        *ngIf="
+          patientForm.get('firstName')?.touched &&
+          patientForm.get('firstName')?.invalid
+        "
+        class="text-red-500 text-sm mt-1"
+      >
+        <div *ngIf="patientForm.get('firstName')?.hasError('required')">
+          First Name is required
+        </div>
+      </div>
     </div>
 
     <div class="mb-3">
@@ -44,6 +55,17 @@
         formControlName="address"
         class="w-full p-2 border rounded"
       />
+      <div
+        *ngIf="
+          patientForm.get('address')?.touched &&
+          patientForm.get('address')?.invalid
+        "
+        class="text-red-500 text-sm mt-1"
+      >
+        <div *ngIf="patientForm.get('address')?.hasError('required')">
+          Address is required
+        </div>
+      </div>
     </div>
 
     <div class="mb-3">
@@ -53,26 +75,42 @@
         formControlName="birthday"
         class="w-full p-2 border rounded"
       />
+      <div
+        *ngIf="
+          patientForm.get('birthday')?.touched &&
+          patientForm.get('birthday')?.invalid
+        "
+        class="text-red-500 text-sm mt-1"
+      >
+        <div *ngIf="patientForm.get('birthday')?.hasError('required')">
+          Birthday is required
+        </div>
+      </div>
     </div>
 
     <div class="mb-3" formArrayName="phoneNumbers">
       <label class="block text-sm font-medium">Phone Numbers</label>
-      <div
-        *ngFor="let phone of phoneNumbers.controls; let i = index"
-        class="flex items-center gap-2"
-      >
-        <input
-          type="text"
-          [formControlName]="i"
-          class="w-full p-2 mb-2 border rounded"
-        />
-        <button
-          type="button"
-          (click)="removePhoneNumber(i)"
-          class="text-red-500"
+      <div *ngFor="let phone of phoneNumbers.controls; let i = index">
+        <div class="flex justify-between gap-2">
+          <input
+            type="text"
+            [formControlName]="i"
+            class="w-full p-2 mb-2 border rounded"
+          />
+          <button
+            type="button"
+            (click)="removePhoneNumber(i)"
+            class="text-red-500"
+          >
+            x
+          </button>
+        </div>
+        <div
+          *ngIf="phone.touched && phone.invalid"
+          class="text-red-500 text-sm mt-1"
         >
-          x
-        </button>
+          <div *ngIf="phone.hasError('required')">PhoneNumber is required</div>
+        </div>
       </div>
       <button type="button" (click)="addPhoneNumber()" class="text-blue-500">
         + Add Phone
@@ -81,18 +119,25 @@
 
     <div class="mb-3" formArrayName="emails">
       <label class="block text-sm font-medium">Emails</label>
-      <div
-        *ngFor="let email of emails.controls; let i = index"
-        class="flex items-center gap-2"
-      >
-        <input
-          type="email"
-          [formControlName]="i"
-          class="w-full p-2 mb-2 border rounded"
-        />
-        <button type="button" (click)="removeEmail(i)" class="text-red-500">
-          x
-        </button>
+      <div *ngFor="let email of emails.controls; let i = index">
+        <div class="flex justify-between gap-2">
+          <input
+            type="email"
+            [formControlName]="i"
+            class="w-full p-2 mb-2 border rounded"
+          />
+
+          <button type="button" (click)="removeEmail(i)" class="text-red-500">
+            x
+          </button>
+        </div>
+        <div
+          *ngIf="email.touched && email.invalid"
+          class="text-red-500 text-sm mt-1"
+        >
+          <div *ngIf="email.hasError('required')">Email is required</div>
+          <div *ngIf="email.hasError('email')">Invalid format</div>
+        </div>
       </div>
       <button type="button" (click)="addEmail()" class="text-blue-500">
         + Add Email

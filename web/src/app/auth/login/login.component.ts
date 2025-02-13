@@ -39,12 +39,8 @@ export class LoginComponent {
 
     this.authService.login(this.loginForm.value).subscribe({
       next: (response) => {
-        if (response.role !== 'user') {
-          localStorage.setItem('token', response.token);
-          this.router.navigate(['/home/patients']);
-        } else {
-          this.alertService.error('Forbidden ' + 'Admin role required');
-        }
+        localStorage.setItem('token', response.token);
+        this.router.navigate(['/home/patients']);
       },
       error: (error) => {
         this.alertService.error(
