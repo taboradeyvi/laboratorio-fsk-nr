@@ -27,8 +27,12 @@ class UserSerive {
     return await userSchema.deleteOne({ _id: id });
   }
 
-  async getAll() {
-    return await userSchema.find();
+  async getAll(skip, limit) {
+    return await userSchema.find().skip(skip).limit(limit);
+  }
+
+  async count() {
+    return await userSchema.countDocuments();
   }
 
   async getById(id) {

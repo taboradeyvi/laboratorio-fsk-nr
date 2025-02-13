@@ -14,8 +14,23 @@ class UserController {
 
   async getAll(req, res, next) {
     try {
-      const user = await userService.getAll();
-      res.status(200).json(user);
+      let { page = 1, limit = 10 } = req.query;
+
+      page = parseInt(page);
+      limit = parseInt(limit);
+
+      const skip = (page - 1) * limit;
+
+      const users = await symptomService.getAll(skip, limit);
+
+      const totalUsers = await userService.count();
+
+      res.status(200).json({
+        users,
+        totalPages: Math.ceil(totalUsers / limit),
+        currentPage: page,
+        totalUsers,
+      });
     } catch (error) {
       next(error);
     }
@@ -50,7 +65,7 @@ class UserController {
 
   async remove(req, res, next) {
     try {
-      const user = await userService.delete(req.params.id, req.body);
+      const user = await userService.delete(req.params.id);
       res.status(200).json(user);
     } catch (error) {
       next(error);

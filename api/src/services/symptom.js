@@ -41,8 +41,12 @@ class SymptomService {
     return await symptomSchema.deleteOne({ _id: id });
   }
 
-  async getAll() {
-    return await symptomSchema.find();
+  async getAll(skip, limit) {
+    return await symptomSchema.find().skip(skip).limit(limit);
+  }
+
+  async count() {
+    return await symptomSchema.countDocuments();
   }
 
   async getById(id) {

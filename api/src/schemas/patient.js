@@ -16,7 +16,7 @@ const patientSchema = new Schema(
     address: {
       type: String,
       maxLength: 300,
-      minLength: 20,
+      minLength: 15,
       required: [true, "Address is required"],
     },
     birthday: { type: Date, default: Date.now },

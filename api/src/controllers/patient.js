@@ -14,8 +14,23 @@ class PatientController {
 
   async getAll(req, res, next) {
     try {
-      const patient = await patientService.getAll();
-      res.status(200).json(patient);
+      let { page = 1, limit = 10 } = req.query;
+
+      page = parseInt(page);
+      limit = parseInt(limit);
+
+      const skip = (page - 1) * limit;
+
+      const patients = await patientService.getAll(skip, limit);
+
+      const totalPatients = await patientService.count();
+
+      res.status(200).json({
+        patients,
+        totalPages: Math.ceil(totalPatients / limit),
+        currentPage: page,
+        totalPatients,
+      });
     } catch (error) {
       next(error);
     }
@@ -50,7 +65,7 @@ class PatientController {
 
   async remove(req, res, next) {
     try {
-      const patient = await patientService.delete(req.params.id, req.body);
+      const patient = await patientService.delete(req.params.id);
       res.status(200).json(patient);
     } catch (error) {
       next(error);

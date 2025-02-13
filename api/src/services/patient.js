@@ -60,8 +60,12 @@ class PatientService {
     return await patientSchema.deleteOne({ _id: id });
   }
 
-  async getAll() {
-    return await patientSchema.find();
+  async getAll(skip, limit) {
+    return await patientSchema.find().skip(skip).limit(limit);
+  }
+
+  async count() {
+    return await patientSchema.countDocuments();
   }
 
   async getById(id) {

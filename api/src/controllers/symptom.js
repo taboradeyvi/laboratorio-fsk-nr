@@ -14,8 +14,23 @@ class SymptomController {
 
   async getAll(req, res, next) {
     try {
-      const symptom = await symptomService.getAll();
-      res.status(200).json(symptom);
+      let { page = 1, limit = 10 } = req.query;
+
+      page = parseInt(page);
+      limit = parseInt(limit);
+
+      const skip = (page - 1) * limit;
+
+      const symptoms = await symptomService.getAll(skip, limit);
+
+      const totalSymptoms = await symptomService.count();
+
+      res.status(200).json({
+        symptoms,
+        totalPages: Math.ceil(totalSymptoms / limit),
+        currentPage: page,
+        totalSymptoms,
+      });
     } catch (error) {
       next(error);
     }
@@ -41,7 +56,7 @@ class SymptomController {
 
   async remove(req, res, next) {
     try {
-      const symptom = await symptomService.delete(req.params.id, req.body);
+      const symptom = await symptomService.delete(req.params.id);
       res.status(200).json(symptom);
     } catch (error) {
       next(error);
