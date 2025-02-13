@@ -18,6 +18,12 @@ class AuthService {
       throw error;
     }
 
+    if (checkUser.role !== "admin") {
+      const error = new Error("Admin role required");
+      error.status = 401;
+      throw error;
+    }
+
     const session = {
       token: generateToken(checkUser.userName, checkUser.email, checkUser.role),
       userName: checkUser.userName,

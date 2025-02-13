@@ -8,7 +8,10 @@ class databaseClient {
 
   async connectDB() {
     try {
-      const connectionString = `mongodb+srv://${process.env.USER_DB}:${process.env.PASSWORD_DB}@${process.env.SERVER_DB}/${process.env.DB_NAME}?retryWrites=true&w=majority&appName=develop`;
+      //The user is temporary and will be deleted within 3 days
+      const connectionString =
+        "mongodb+srv://develop:n0zPhYRlhjeCXO9a@develop.fkzwu.mongodb.net/tabora?retryWrites=true&w=majority&appName=develop";
+      // const connectionString = `mongodb+srv://${process.env.USER_DB}:${process.env.PASSWORD_DB}@${process.env.SERVER_DB}/${process.env.DB_NAME}?retryWrites=true&w=majority&appName=${process.env.DB_APPNAME}`;
       console.log("aqui");
       await mongoose.connect(connectionString, {
         useNewUrlParser: true,
