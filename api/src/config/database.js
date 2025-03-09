@@ -9,7 +9,6 @@ class databaseClient {
   async connectDB() {
     try {
       const connectionString = `mongodb+srv://${process.env.USER_DB}:${process.env.PASSWORD_DB}@${process.env.SERVER_DB}/${process.env.DB_NAME}?retryWrites=true&w=majority&appName=${process.env.DB_APPNAME}`;
-      console.log("aqui");
       await mongoose.connect(connectionString, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
